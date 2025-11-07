@@ -1,0 +1,16 @@
+{
+    "appFunctions": {
+        "getContacts": {
+            "file": "get-contacts.js",
+            "secrets": [
+                "HUBSPOT_API_KEY"
+            ],
+            "endpoint": {
+                "path": "get-contacts",
+                "method": [
+                    "GET"
+                ]
+            }
+        }
+    }
+}
