@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import * as SeparatorPrimitive from '@radix-ui/react-separator';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { PanelLeft } from 'lucide-react';
+import { FaBars } from 'react-icons/fa';
 import { cn } from '../../lib/utils.js';
 import { Button } from './button.js';
 
@@ -255,7 +255,7 @@ const SidebarTrigger = React.forwardRef<
       }}
       {...props}
     >
-      <PanelLeft />
+      <FaBars />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );

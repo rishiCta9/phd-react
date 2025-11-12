@@ -1,0 +1,9 @@
+{
+  "name": "hubspot-cms-functions",
+  "version": "1.0.0",
+  "description": "HubSpot CMS Functions",
+  "dependencies": {
+    "@hubspot/api-client": "^7.0.1",
+    "node-fetch": "^3.3.1"
+  }
+}

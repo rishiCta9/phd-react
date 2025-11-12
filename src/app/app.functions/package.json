@@ -1,7 +1,0 @@
-{
-    "name": "get-contacts-app",
-    "version": "0.1.0",
-    "dependencies": {
-        "axios": "^0.27.2"
-    }
-}

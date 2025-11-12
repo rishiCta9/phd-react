@@ -1,0 +1,10 @@
+{
+  "type": "app-function",
+  "config": {
+    "entrypoint": "fetchContact.js",
+    "endpoint": {
+      "path": "/fetchContact",
+      "methods": ["GET"]
+    }
+  }
+}

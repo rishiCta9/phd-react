@@ -1,0 +1,18 @@
+{
+  "type": "app",
+  "uid": "cms-theme-app",
+  "config": {
+    "name": "CMS Theme App",
+    "description": "HubSpot CMS Theme App with Contact Management Functions",
+    "auth": {
+      "type": "static",
+      "requiredScopes": ["contacts", "oauth"]
+    },
+    "permittedUrls": {
+      "fetch": [],
+      "iframe": [],
+      "img": []
+    },
+    "distribution": "private"
+  }
+}

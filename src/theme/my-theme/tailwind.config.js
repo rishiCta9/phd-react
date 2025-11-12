@@ -1,25 +1,45 @@
 const tailwindcssAnimate = require('tailwindcss-animate');
+const path = require('path');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ['class'],
   content: [
-    // Local development paths
+    // Use path.join for reliable path resolution across different build environments
+    path.join(__dirname, 'components/**/*.{ts,tsx,js,jsx}'),
+    path.join(__dirname, 'components/modules/**/*.{ts,tsx,js,jsx}'),
+    path.join(__dirname, 'components/ui/**/*.{ts,tsx,js,jsx}'),
+    path.join(__dirname, 'templates/**/*.{html,hubl,hubl.html}'),
+    path.join(__dirname, 'templates/**/*.html'),
+    path.join(__dirname, 'templates/layouts/**/*.{html,hubl,hubl.html}'),
+    path.join(__dirname, 'lib/**/*.{ts,tsx,js,jsx}'),
+    path.join(__dirname, 'styles/**/*.{css,scss,sass}'),
+    path.join(__dirname, 'styles/**/*.css'),
+    path.join(__dirname, 'partials/**/*.{ts,tsx,js,jsx,html,hubl}'),
+
+    // Relative paths as fallback (for different working directories)
     './components/**/*.{ts,tsx,js,jsx}',
+    './components/modules/**/*.{ts,tsx,js,jsx}',
+    './components/ui/**/*.{ts,tsx,js,jsx}',
     './templates/**/*.{html,hubl,hubl.html}',
+    './templates/**/*.html',
+    './templates/layouts/**/*.{html,hubl,hubl.html}',
     './lib/**/*.{ts,tsx,js,jsx}',
-    './styles/**/*.{css,scss}',
-    './partials/**/*.{ts,tsx,js,jsx}',
+    './styles/**/*.{css,scss,sass}',
+    './styles/**/*.css',
+    './partials/**/*.{ts,tsx,js,jsx,html,hubl}',
 
-    // Fallback patterns for build environment (without ./)
+    // Paths without ./ prefix (for build tools)
     'components/**/*.{ts,tsx,js,jsx}',
+    'components/modules/**/*.{ts,tsx,js,jsx}',
+    'components/ui/**/*.{ts,tsx,js,jsx}',
     'templates/**/*.{html,hubl,hubl.html}',
+    'templates/**/*.html',
+    'templates/layouts/**/*.{html,hubl,hubl.html}',
     'lib/**/*.{ts,tsx,js,jsx}',
-    'styles/**/*.{css,scss}',
-    'partials/**/*.{ts,tsx,js,jsx}',
-
-    // Catch-all for HubSpot build
-    './**/*.{ts,tsx,js,jsx,html,hubl}',
+    'styles/**/*.{css,scss,sass}',
+    'styles/**/*.css',
+    'partials/**/*.{ts,tsx,js,jsx,html,hubl}',
   ],
   safelist: [
     // Layout utilities
