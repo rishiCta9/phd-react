@@ -56,10 +56,22 @@ module.exports = {
     'h-screen',
     'h-full',
     'h-auto',
+    'h-24',
+    'h-32',
     'w-full',
+    'w-24',
+    'w-32',
     'w-64',
     'w-auto',
+    'w-2.5',
+    'w-8',
+    'w-10',
+    'w-48',
+    'w-80',
     'min-h-screen',
+    'max-w-md',
+    'max-w-4xl',
+    'max-w-7xl',
 
     // Spacing
     'p-0',
@@ -96,12 +108,26 @@ module.exports = {
     'text-lg',
     'text-xl',
     'text-2xl',
+    'text-3xl',
+    'text-4xl',
+    'text-5xl',
     'font-normal',
     'font-medium',
     'font-semibold',
     'font-bold',
     'leading-4',
     'leading-none',
+    'text-gray-500',
+    'text-gray-600',
+    'text-gray-700',
+    'text-gray-900',
+    'text-white',
+    'text-red-500',
+    'text-red-700',
+    'text-[#D4AF37]',
+    'text-[#bf974c]',
+    'uppercase',
+    'break-words',
 
     // Borders
     'border',
@@ -109,6 +135,12 @@ module.exports = {
     'border-b',
     'border-l',
     'border-r',
+    'border-2',
+    'border-4',
+    'border-gray-200',
+    'border-gray-300',
+    'border-white',
+    'border-red-200',
     'rounded',
     'rounded-md',
     'rounded-lg',
@@ -132,6 +164,29 @@ module.exports = {
     {
       pattern:
         /^(bg|text|border|ring)-sidebar(-foreground|-border|-accent|-accent-foreground|-ring|-primary|-primary-foreground)?$/,
+    },
+    // Pattern for width and height utilities
+    {
+      pattern: /^(w|h)-(24|32|48|64|80|96|full|screen|auto)$/,
+    },
+    {
+      pattern: /^(w|h)-\d+$/,
+    },
+    // Pattern for spacing utilities
+    {
+      pattern: /^(p|px|py|pt|pb|pl|pr|m|mx|my|mt|mb|ml|mr|gap|space-[xy])-\d+$/,
+    },
+    // Pattern for text colors
+    {
+      pattern: /^text-(gray|red|blue|green|yellow|purple|pink)-\d+$/,
+    },
+    // Pattern for background colors
+    {
+      pattern: /^bg-(gray|red|blue|green|yellow|purple|pink)-\d+$/,
+    },
+    // Pattern for border colors
+    {
+      pattern: /^border-(gray|red|blue|green|yellow|purple|pink|white)-\d+$/,
     },
 
     // Generate all flex utilities
@@ -159,8 +214,105 @@ module.exports = {
     'cursor-pointer',
     'hover:bg-sidebar-accent',
     'hover:text-sidebar-accent-foreground',
+    'hover:bg-gray-100',
+    'hover:shadow-lg',
+    'hover:shadow-md',
     'transition-colors',
+    'transition-shadow',
     'duration-200',
+
+    // Object fit
+    'object-cover',
+    'object-contain',
+
+    // Background colors
+    'bg-white',
+    'bg-gray-50',
+    'bg-gray-100',
+    'bg-gray-200',
+    'bg-red-50',
+    'bg-red-500',
+    'bg-red-600',
+    'bg-red-700',
+    'bg-[#D4AF37]',
+    'bg-[#bf974c]',
+    'bg-gradient-to-r',
+    'bg-gradient-to-br',
+    'from-blue-400',
+    'via-purple-500',
+    'to-pink-500',
+    'from-[#D4AF37]',
+    'to-[#bf974c]',
+
+    // Positioning
+    'absolute',
+    'relative',
+    'top-1/2',
+    'left-3',
+    'right-0',
+    'right-3',
+    '-top-0.5',
+    '-right-0.5',
+    '-mt-24',
+    'transform',
+    '-translate-y-1/2',
+
+    // Grid and layout
+    'grid-cols-1',
+    'md:grid-cols-2',
+    'lg:grid-cols-3',
+    'lg:col-span-1',
+    'lg:col-span-2',
+
+    // Flexbox
+    'items-center',
+    'items-start',
+    'items-end',
+    'justify-center',
+    'justify-end',
+    'justify-start',
+    'flex-shrink-0',
+
+    // Spacing specific
+    'pt-6',
+    'pb-4',
+    'pb-8',
+    'px-6',
+    'px-8',
+    'py-2',
+    'py-4',
+    'py-8',
+    'py-12',
+    'mb-1',
+    'mb-2',
+    'mb-4',
+    'mb-6',
+    'mt-2',
+    'mt-8',
+    'gap-2',
+    'gap-3',
+    'gap-4',
+    'gap-6',
+    'gap-8',
+
+    // Text alignment
+    'text-center',
+    'text-left',
+    'lg:text-left',
+
+    // Overflow
+    'overflow-hidden',
+    'overflow-y-auto',
+
+    // Z-index
+    'z-50',
+
+    // Opacity and visibility
+    'opacity-0',
+
+    // Specific height/width combinations
+    'h-48',
+    'h-16',
   ],
   theme: {
     container: {

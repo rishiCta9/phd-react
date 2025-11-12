@@ -8,6 +8,10 @@ import {
   FaChevronDown,
   FaSearch,
   FaSpinner,
+  FaArrowLeft,
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
 } from 'react-icons/fa';
 
 // Get EXTERNAL_API from FRONTEND_URL environment variable
@@ -44,11 +48,181 @@ interface Member {
   initials: string;
   email: string;
   city: string;
+  state: string;
+  country: string;
   phone: string;
+  company: string;
+  title: string;
+  address: string;
+  zip: string;
   profilePicture?: string;
+  username: string;
 }
 
-const MemberCard = ({ member }: { member: Member }) => {
+// Generate username from email or name
+const generateUsername = (email: string, name: string): string => {
+  if (email) {
+    // Use email prefix as username
+    return email.split('@')[0].toLowerCase();
+  }
+  // Generate from name
+  return name
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+};
+
+const ContactDetailView = ({ contact }: { contact: Member }) => {
+  const [imageError, setImageError] = React.useState(false);
+  const frontendUrl = getHubspotFrontendUrl();
+  const imageUrl = contact.profilePicture
+    ? `${frontendUrl}/${contact.profilePicture}`
+    : null;
+  const showImage = imageUrl && !imageError;
+
+  return (
+    <div className="w-full">
+      {/* Header with background color */}
+      <div className="bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 h-48 w-full"></div>
+
+      {/* Content Container */}
+      <div className="max-w-7xl mx-auto px-6 -mt-24 pb-8">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-8">
+            {/* Left Column - Profile Info */}
+            <div className="lg:col-span-1">
+              <div className="flex flex-col items-center lg:items-start">
+                {/* Profile Picture */}
+                <div className="mb-6">
+                  {showImage ? (
+                    <img
+                      src={imageUrl}
+                      alt={contact.name}
+                      className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
+                      onError={() => setImageError(true)}
+                    />
+                  ) : (
+                    <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center border-4 border-white shadow-lg">
+                      <span className="text-gray-600 text-3xl font-semibold">
+                        {contact.initials}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Name */}
+                <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center lg:text-left">
+                  {contact.name}
+                </h1>
+
+                {/* Location */}
+                {contact.city && (
+                  <div className="flex items-center gap-2 mb-4 text-gray-600">
+                    <FaMapMarkerAlt className="text-sm" />
+                    <span className="text-sm">{contact.city}</span>
+                  </div>
+                )}
+
+                {/* Email */}
+                {contact.email && (
+                  <div className="w-full mb-4">
+                    <p className="text-xs text-gray-500 mb-1 font-semibold uppercase">
+                      Email
+                    </p>
+                    <p className="text-sm text-gray-900 break-words">
+                      {contact.email}
+                    </p>
+                  </div>
+                )}
+
+                {/* Company */}
+                {contact.company && (
+                  <div className="w-full">
+                    <p className="text-xs text-gray-500 mb-1 font-semibold uppercase">
+                      Company
+                    </p>
+                    <p className="text-sm text-gray-900">{contact.company}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Right Column - Address Information */}
+            <div className="lg:col-span-2">
+              <div className="space-y-6">
+                <h2 className="text-lg font-bold text-gray-900 mb-4">
+                  Address Information
+                </h2>
+
+                {/* Full Address */}
+                {contact.address && (
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1 font-semibold uppercase">
+                      Address
+                    </p>
+                    <p className="text-sm text-gray-900">{contact.address}</p>
+                  </div>
+                )}
+
+                {/* City, State, Country */}
+                {(contact.city || contact.state || contact.country) && (
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1 font-semibold uppercase">
+                      Location
+                    </p>
+                    <p className="text-sm text-gray-900">
+                      {[contact.city, contact.state, contact.country]
+                        .filter(Boolean)
+                        .join(', ')}
+                    </p>
+                  </div>
+                )}
+
+                {/* Zip Code */}
+                {contact.zip && (
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1 font-semibold uppercase">
+                      Zip Code
+                    </p>
+                    <p className="text-sm text-gray-900">{contact.zip}</p>
+                  </div>
+                )}
+
+                {/* Phone */}
+                {contact.phone && (
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1 font-semibold uppercase">
+                      Phone
+                    </p>
+                    <p className="text-sm text-gray-900">{contact.phone}</p>
+                  </div>
+                )}
+
+                {/* Title */}
+                {contact.title && (
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1 font-semibold uppercase">
+                      Title
+                    </p>
+                    <p className="text-sm text-gray-900">{contact.title}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const MemberCard = ({
+  member,
+  onClick,
+}: {
+  member: Member;
+  onClick: (member: Member) => void;
+}) => {
   const [imageError, setImageError] = React.useState(false);
   const showImage = member.profilePicture && !imageError;
   const frontendUrl = getHubspotFrontendUrl();
@@ -56,8 +230,15 @@ const MemberCard = ({ member }: { member: Member }) => {
     ? `${frontendUrl}/${member.profilePicture}`
     : null;
 
+  const handleClick = () => {
+    onClick(member);
+  };
+
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex flex-col">
+    <div
+      onClick={handleClick}
+      className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex flex-col"
+    >
       {/* Profile Picture */}
       <div className="flex justify-center pt-6 pb-4">
         {showImage && imageUrl ? (
@@ -106,6 +287,12 @@ const AllMembersInteractive = () => {
   const [nextAfter, setNextAfter] = React.useState<string | null>(null);
   const [hasMore, setHasMore] = React.useState(false);
 
+  // Contact detail view state
+  const [selectedContact, setSelectedContact] = React.useState<Member | null>(
+    null,
+  );
+  const [showDetailView, setShowDetailView] = React.useState(false);
+
   // Helper function to map contacts to members
   const mapContactsToMembers = React.useCallback(
     (contactsList: any[]): Member[] => {
@@ -120,14 +307,25 @@ const AllMembersInteractive = () => {
         // Extract email
         const email = props.email || '';
 
-        // Extract city (try city first, then ip_city as fallback)
+        // Extract location fields
         const city = props.city || props.ip_city || '';
+        const state = props.state || props.ip_state || props.state_code || '';
+        const country = props.country || props.ip_country || '';
+        const address = props.address || '';
+        const zip = props.zip || props.ip_zipcode || '';
 
         // Extract phone (try phone first, then mobilephone as fallback)
         const phone = props.phone || props.mobilephone || '';
 
+        // Extract company and title
+        const company = props.company || props.companyname || '';
+        const title = props.jobtitle || props.title || props.position || '';
+
         // Extract profile picture from hs_avatar_filemanager_key
         const profilePicture = props.hs_avatar_filemanager_key || '';
+
+        // Generate username
+        const username = generateUsername(email, fullName);
 
         return {
           id: contact.id || contact.hs_object_id || String(Math.random()),
@@ -135,8 +333,15 @@ const AllMembersInteractive = () => {
           initials: initials,
           email: email,
           city: city,
+          state: state,
+          country: country,
+          address: address,
+          zip: zip,
           phone: phone,
+          company: company,
+          title: title,
           profilePicture: profilePicture,
+          username: username,
         };
       });
     },
@@ -227,12 +432,46 @@ const AllMembersInteractive = () => {
     }
   }, [nextAfter, hasMore, loadingMore, fetchContacts]);
 
+  // Check URL for username parameter on mount
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const usernameParam = urlParams.get('username');
+      if (usernameParam) {
+        // Find contact by username in already loaded members
+        const found = members.find((m) => m.username === usernameParam);
+        if (found) {
+          setSelectedContact(found);
+          setShowDetailView(true);
+        }
+      }
+    }
+  }, [members]);
+
   React.useEffect(() => {
     // Initial load - reset pagination
     setNextAfter(null);
     setHasMore(false);
     fetchContacts();
   }, [fetchContacts]);
+
+  const handleContactClick = React.useCallback((member: Member) => {
+    setSelectedContact(member);
+    setShowDetailView(true);
+    // Update URL without page reload
+    window.history.pushState(
+      {},
+      '',
+      `?username=${encodeURIComponent(member.username)}`,
+    );
+  }, []);
+
+  const handleBackToList = React.useCallback(() => {
+    setShowDetailView(false);
+    setSelectedContact(null);
+    // Update URL without page reload
+    window.history.pushState({}, '', window.location.pathname);
+  }, []);
 
   React.useEffect(() => {
     const handleClickOutside = (event) => {
@@ -380,105 +619,134 @@ const AllMembersInteractive = () => {
 
           {/* Main Content */}
           <main className="flex flex-1 flex-col overflow-hidden bg-gray-50">
-            <div className="bg-white px-6 py-4 border-b border-gray-200">
-              <div className="flex gap-4 items-center">
-                {/* Search bar on the left */}
-                <div className="relative flex-1 max-w-md">
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
-                  />
-                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
-                    <FaSearch className="text-gray-400" />
-                  </div>
-                </div>
+            {!showDetailView ? (
+              <>
+                <div className="bg-white px-6 py-4 border-b border-gray-200">
+                  <div className="flex gap-4 items-center">
+                    {/* Search bar on the left */}
+                    <div className="relative flex-1 max-w-md">
+                      <input
+                        type="text"
+                        placeholder="Search..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                      />
+                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                        <FaSearch className="text-gray-400" />
+                      </div>
+                    </div>
 
-                {/* City filter dropdown on the right */}
-                <div className="flex gap-3">
-                  <select
-                    value={cityFilter}
-                    onChange={(e) => setCityFilter(e.target.value)}
-                    className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent bg-white text-sm"
-                  >
-                    <option value="">City</option>
-                    {cityOptions.map((city) => (
-                      <option key={city} value={city}>
-                        {city}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex-1 overflow-y-auto bg-gray-50 p-6">
-              {loading && (
-                <div className="flex items-center justify-center py-12">
-                  <FaSpinner className="w-6 h-6 animate-spin text-[#D4AF37] mr-3" />
-                  <span className="text-gray-600">Loading contacts...</span>
-                </div>
-              )}
-
-              {error && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded-lg mb-4">
-                  <p className="text-red-700 mb-2">
-                    Error loading contacts: {error}
-                  </p>
-                  <button
-                    onClick={() => fetchContacts()}
-                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
-                  >
-                    Retry
-                  </button>
-                </div>
-              )}
-
-              {!loading && !error && filteredMembers.length === 0 && (
-                <div className="text-center py-12 text-gray-500">
-                  <p className="text-lg mb-2">No members found</p>
-                  <p className="text-sm">
-                    {searchQuery
-                      ? 'Try adjusting your search'
-                      : 'No contacts available'}
-                  </p>
-                </div>
-              )}
-
-              {!loading && !error && filteredMembers.length > 0 && (
-                <>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredMembers.map((member) => (
-                      <MemberCard key={member.id} member={member} />
-                    ))}
-                  </div>
-
-                  {/* Load More Button */}
-                  {hasMore && !loadingMore && (
-                    <div className="flex justify-center mt-8">
-                      <button
-                        onClick={loadMore}
-                        className="px-6 py-3 bg-[#D4AF37] text-white rounded-lg font-semibold hover:bg-[#bf974c] transition-colors shadow-md hover:shadow-lg"
+                    {/* City filter dropdown on the right */}
+                    <div className="flex gap-3">
+                      <select
+                        value={cityFilter}
+                        onChange={(e) => setCityFilter(e.target.value)}
+                        className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent bg-white text-sm"
                       >
-                        Load More
+                        <option value="">City</option>
+                        {cityOptions.map((city) => (
+                          <option key={city} value={city}>
+                            {city}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex-1 overflow-y-auto bg-gray-50 p-6">
+                  {loading && (
+                    <div className="flex items-center justify-center py-12">
+                      <FaSpinner className="w-6 h-6 animate-spin text-[#D4AF37] mr-3" />
+                      <span className="text-gray-600">Loading contacts...</span>
+                    </div>
+                  )}
+
+                  {error && (
+                    <div className="p-4 bg-red-50 border border-red-200 rounded-lg mb-4">
+                      <p className="text-red-700 mb-2">
+                        Error loading contacts: {error}
+                      </p>
+                      <button
+                        onClick={() => fetchContacts()}
+                        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+                      >
+                        Retry
                       </button>
                     </div>
                   )}
 
-                  {/* Loading More Indicator */}
-                  {loadingMore && (
-                    <div className="flex items-center justify-center py-8">
-                      <FaSpinner className="w-5 h-5 animate-spin text-[#D4AF37] mr-3" />
-                      <span className="text-gray-600">
-                        Loading more contacts...
-                      </span>
+                  {!loading && !error && filteredMembers.length === 0 && (
+                    <div className="text-center py-12 text-gray-500">
+                      <p className="text-lg mb-2">No members found</p>
+                      <p className="text-sm">
+                        {searchQuery
+                          ? 'Try adjusting your search'
+                          : 'No contacts available'}
+                      </p>
                     </div>
                   )}
-                </>
-              )}
-            </div>
+
+                  {!loading && !error && filteredMembers.length > 0 && (
+                    <>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {filteredMembers.map((member) => (
+                          <MemberCard
+                            key={member.id}
+                            member={member}
+                            onClick={handleContactClick}
+                          />
+                        ))}
+                      </div>
+
+                      {/* Load More Button */}
+                      {hasMore && !loadingMore && (
+                        <div className="flex justify-center mt-8">
+                          <button
+                            onClick={loadMore}
+                            className="px-6 py-3 bg-[#D4AF37] text-white rounded-lg font-semibold hover:bg-[#bf974c] transition-colors shadow-md hover:shadow-lg"
+                          >
+                            Load More
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Loading More Indicator */}
+                      {loadingMore && (
+                        <div className="flex items-center justify-center py-8">
+                          <FaSpinner className="w-5 h-5 animate-spin text-[#D4AF37] mr-3" />
+                          <span className="text-gray-600">
+                            Loading more contacts...
+                          </span>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              </>
+            ) : (
+              /* Contact Detail View */
+              <>
+                <div className="bg-white px-6 py-4 border-b border-gray-200">
+                  <button
+                    onClick={handleBackToList}
+                    className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    <FaArrowLeft className="text-sm" />
+                    <span className="text-sm font-medium">
+                      Back to All Members
+                    </span>
+                  </button>
+                </div>
+
+                <div className="flex-1 overflow-y-auto bg-gray-50">
+                  {selectedContact && (
+                    <ContactDetailView contact={selectedContact} />
+                  )}
+                </div>
+              </>
+            )}
           </main>
         </div>
       </div>

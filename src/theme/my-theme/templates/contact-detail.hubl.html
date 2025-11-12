@@ -1,0 +1,17 @@
+<!--
+  templateType: page
+  isAvailableForNewContent: true
+  label: Contact Detail Page
+-->
+{% extends "./layouts/base.hubl.html" %}
+
+{% block body %}
+
+  {% module
+    "contactDetail"
+    path="../components/modules/ContactDetail",
+    brandColors="{{ theme.brand_color }}",
+  %}
+
+{% endblock body %}
+
